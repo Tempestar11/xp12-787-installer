@@ -49,10 +49,15 @@ image_label.grid(column=0, row=0)
 aircraftLabel = ttk.Label(aircraftTab, text = 'Select X-plane folder: ')
 aircraftLabel.grid(column=0, row=1, padx = 10, pady = 10, sticky = 'W')
 
-# Creating a folder selection button for the aircraft installer
-root.directory = filedialog.askdirectory()
-xp_dir = root.directory
-print(xp_dir)
+
+# Creating a button to select the X-plane directory
+def select_directory():
+    xp_dir = filedialog.askdirectory()
+    if xp_dir:
+        messagebox.showinfo('Selected directory', f'You selected: {xp_dir}')
+
+button = ttk.Button(aircraftTab, text = 'Select directory', command = select_directory)
+button.grid(column=0, row=1, padx = 10, pady = 10)
 
 if __name__ == '__main__':
     root.mainloop()
