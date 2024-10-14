@@ -25,7 +25,7 @@ tabControl.add(liveryTab, text ='Livery installer')
 tabControl.pack(expand = 1, fill ="both", padx = 10, pady = 10) 
 
 # Load, resize, and display an image in the aircraftTab
-image_path = "thumbnail.jpg"  # Replace with the path to your image file
+image_path = "xp12-787-installer/thumbnail.jpg"  # Replace with the path to your image file
 image = Image.open(image_path)
 
 # Resize the image to fit within the tab dynamically based on window size
@@ -43,21 +43,36 @@ aircraftTab.bind('<Configure>', resize_image)
 photo = ImageTk.PhotoImage(image)
 image_label = ttk.Label(aircraftTab, image=photo)
 image_label.image = photo  # Keep a reference to avoid garbage collection
-image_label.grid(column=0, row=0)
+image_label.grid(column=0, row=0, rowspan=10, columnspan=10, padx = 10, pady = 10)
 
-# Creating a label for the aircraft installer
+# Creating a label for the xp directory
 aircraftLabel = ttk.Label(aircraftTab, text = 'Select X-plane folder: ')
-aircraftLabel.grid(column=0, row=1, padx = 10, pady = 10, sticky = 'W')
+aircraftLabel.grid(column=0, row=10, padx = 10, pady = 10, sticky = 'W')
+dirLabel = ttk.Label(aircraftTab, text = 'Selected directory: ')
+dirLabel.grid(column=0, row=11, padx = 10, pady = 10, sticky = 'W')
 
+# Creating a label to display the selected directory
+selected_dir = tk.StringVar()
+selected_dir.set('No directory selected')
+dirLabel = ttk.Label(aircraftTab, textvariable = selected_dir)
+dirLabel.grid(column=1, row=11, padx = 10, pady = 10, sticky = 'W')
 
 # Creating a button to select the X-plane directory
 def select_directory():
     xp_dir = filedialog.askdirectory()
     if xp_dir:
-        messagebox.showinfo('Selected directory', f'You selected: {xp_dir}')
-
+        selected_dir.set(xp_dir)
+        show_button()
 button = ttk.Button(aircraftTab, text = 'Select directory', command = select_directory)
-button.grid(column=0, row=1, padx = 10, pady = 10)
+button.grid(column=1, row=10, padx = 10, pady = 10, stick = 'W')
+
+# Creating a button to download the aircraft
+button2 = ttk.Button(aircraftTab, text='Install')
+button2.grid(column=8, row=11, padx=10, pady=10, sticky='E')
+button2.grid_remove()  # Initially hide the button
+
+def show_button():
+    button2.grid()  # Show the button
 
 if __name__ == '__main__':
     root.mainloop()
