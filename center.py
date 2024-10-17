@@ -18,3 +18,5 @@ def center(root):
 
     # Set the window geometry to center it
     root.geometry(f'{window_width}x{window_height}+{position_right}+{position_down}')
+    root.withdraw()
+    root.after(0,root.deiconify)
