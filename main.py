@@ -2,6 +2,7 @@ import os, tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 from center import center
 from PIL import Image, ImageTk
+from install import download_plane
 
 # Creating main window
 root = tk.Tk()
@@ -45,7 +46,7 @@ image_label = ttk.Label(aircraftTab, image=photo)
 image_label.image = photo  # Keep a reference to avoid garbage collection
 image_label.grid(column=0, row=0, rowspan=10, columnspan=10, padx = 10, pady = 10)
 
-# Creating a label for the xp directory
+# Creating a label for xp directory
 aircraftLabel = ttk.Label(aircraftTab, text = 'Select X-plane folder: ')
 aircraftLabel.grid(column=0, row=10, padx = 10, pady = 10, sticky = 'W')
 dirLabel = ttk.Label(aircraftTab, text = 'Selected directory: ')
@@ -58,20 +59,21 @@ dirLabel = ttk.Label(aircraftTab, textvariable = selected_dir)
 dirLabel.grid(column=1, row=11, padx = 10, pady = 10, sticky = 'W')
 
 # Creating a button to select the X-plane directory
+xp_dir = ''
 def select_directory():
     xp_dir = filedialog.askdirectory()
     if xp_dir:
         selected_dir.set(xp_dir)
-        show_button()
+        show_install_button()
 button = ttk.Button(aircraftTab, text = 'Select directory', command = select_directory)
 button.grid(column=1, row=10, padx = 10, pady = 10, stick = 'W')
 
-# Creating a button to download the aircraft
-button2 = ttk.Button(aircraftTab, text='Install')
+# Creating the install button
+button2 = ttk.Button(aircraftTab, text='Install', command = lambda: download_plane(xp_dir))
 button2.grid(column=8, row=11, padx=10, pady=10, sticky='E')
 button2.grid_remove()  # Initially hide the button
 
-def show_button():
+def show_install_button():
     button2.grid()  # Show the button
 
 if __name__ == '__main__':
