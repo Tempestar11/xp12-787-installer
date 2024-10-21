@@ -42,8 +42,19 @@ def check_image_loaded():
 
 # Start the image loading in a separate thread
 threading.Thread(target=load_image_thread).start()
-# Periodically check if the image has been loaded
-aircraftTab.after(100, check_image_loaded)
+check_image_loaded()
+
+# Creating a button to select the X-plane directory
+xp_dir = ''
+def select_directory():
+    xp_dir = filedialog.askdirectory()
+    if xp_dir:
+        selected_dir.set(xp_dir)
+        show_install_button()
+button = ttk.Button(aircraftTab, text='Select directory', command=select_directory)
+button.grid(column=1, row=10, padx=10, pady=10, sticky='W')
+button.bind('<Enter>', lambda e: button.config(cursor='hand2'))
+button.bind('<Leave>', lambda e: button.config(cursor='arrow'))
 
 # Creating a label for xp directory
 aircraftLabel = ttk.Label(aircraftTab, text = 'Select X-plane folder: ')
@@ -57,18 +68,6 @@ selected_dir.set('No directory selected')
 dirLabel = ttk.Label(aircraftTab, textvariable = selected_dir)
 dirLabel.grid(column=1, row=11, padx = 10, pady = 10, sticky = 'W')
 
-# Creating a button to select the X-plane directory
-xp_dir = ''
-def select_directory():
-    xp_dir = filedialog.askdirectory()
-    if xp_dir:
-        selected_dir.set(xp_dir)
-        show_install_button()
-button = ttk.Button(aircraftTab, text = 'Select directory', command = select_directory)
-button.grid(column=1, row=10, padx = 10, pady = 10, stick = 'W')
-button.bind('<Enter>', lambda e: button.config(cursor='hand2'))
-button.bind('<Leave>', lambda e: button.config(cursor='arrow'))
-
 # Creating the install button
 button2 = ttk.Button(aircraftTab, text='Install', command = lambda: download_plane(xp_dir))
 button2.grid(column=8, row=11, padx=10, pady=10, sticky='E')
@@ -76,8 +75,6 @@ button2.grid_remove()  # Initially hide the button
 
 def show_install_button():
     button2.grid()  # Show the button
-    button2.bind('<Enter>', lambda e: button.config(cursor='hand2'))
-    button2.bind('<Leave>', lambda e: button.config(cursor='arrow'))
 
 if __name__ == '__main__':
     root.mainloop()
